@@ -10,6 +10,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid'
 
 function Home() {
   const [title, setTitle] = useState("");
@@ -77,10 +78,32 @@ function Home() {
               <Button variant="outlined">I'm Feeling Lucky</Button>
             </div>
           </form>
+          <Grid container spacing={4}>{books.map(item => {
+            return <Grid item xs={2}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="300"
+                  image={item.image_url}
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {item.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles, with over 6,000
+                    species, ranging across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Share</Button>
+                  <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
+            </Grid>
+          })}</Grid>
 
-          {books.map(item => {
-            return <div><Image src={item.image_url} size='small' /></div>
-          })}
 
         </div>
       </div>

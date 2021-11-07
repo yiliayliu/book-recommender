@@ -42,7 +42,7 @@
 
 .home__body > img {
   object-fit: contain;
-  height: 15%;
+  height: 15vh;
   min-height: 250px;
 }
 
