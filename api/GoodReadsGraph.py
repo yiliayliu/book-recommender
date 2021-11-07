@@ -2,12 +2,13 @@ import pandas as pd
 import numpy as np
 
 class Graph(object):
-    def __init__(self, reads):
+    def __init__(self, reads, books):
         """
 
         """
         # Edges in our graph
         self.reads = reads
+        self.books = books
 
 
     def _find_a_user(self, input_User, debug=False):
@@ -237,7 +238,6 @@ def BuildGraph():
     `books`: meta information about each of the items (# of ratings, Author, etc.)
     """
     uir = pd.read_csv("api/data/goodbooks-10k-master/ratings.csv")
-
     books = pd.read_csv("api/data/goodbooks-10k-master/books.csv")
     books = books[(books["language_code"] == "eng") | (books["language_code"] == "en-US")]
     books["author_id"] = (books["authors"].astype("category")).cat.codes # Gives us an index
@@ -300,6 +300,7 @@ def BuildGraph():
 
     unique_books = uir[["book_id", "original_title", "author_id", "ratings_5", "popularity_ratings",
                         "image_url"]].drop_duplicates()
+    # TODO info needed: title, authors, orig pub year, language, rating, rating cnt
     unique_books["Book"] = [Book(bid, author_dict[aid]["Author"], rat, pop, url) for bid, aid, rat, pop, url
                             in unique_books[
                                 ["book_id", "author_id", "ratings_5", "popularity_ratings", "image_url"]].values]
@@ -333,6 +334,7 @@ def BuildGraph():
     read_list = [Read(user_dict[u]["User"], book_dict[b]["Book"], author_dict[a]["Author"], rating=int(r))
                for u, b, a, r in uir[["user_id","book_id","author_id", "rating"]].values]
 
-    BigGraph = Graph(read_list)
+    BigGraph = Graph(read_list, books)
+    # BigGraph = None
 
     return BigGraph, titles_dict

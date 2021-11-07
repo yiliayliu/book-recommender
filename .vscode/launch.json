@@ -15,10 +15,12 @@
             },
             "args": [
                 "run",
-                "--no-debugger"
+                "--no-debugger",
+                "--port",
+                "4000"
             ],
             "jinja": true,
-            "host": "127.0.0.1"
+            "host": "localhost"
         }
     ]
 }

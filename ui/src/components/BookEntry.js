@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { Form, Input, Button } from 'semantic-ui-react';
 
 
-export const BookEntry = ()  => {
+export const BookEntry = () => {
   const [title, setTitle] = useState(''); //  Empty String
   return (
     <Form>
       <Form.Field>
         <Input
-        placeholder="Enter one of your favorite book titles "
-        value={title}
-        onChange={event => setTitle(event.target.value)}
+          placeholder="Enter one of your favorite book titles "
+          value={title}
+          onChange={event => setTitle(event.target.value)}
         />
       </Form.Field>
 
       <Form.Field>
-        <Button onClick= {async () => {
-          const book = {title};
+        <Button onClick={async () => {
+          const book = { title };
           const response = await fetch("/input_book", {
             method: "POST",
             headers: {
@@ -24,7 +24,7 @@ export const BookEntry = ()  => {
             },
             body:
               JSON.stringify(book)
-            })
+          })
 
           if (response.ok) {
             console.log("Response Worked! ");
@@ -40,7 +40,7 @@ export const BookEntry = ()  => {
 
         }}>
 
-        Add</Button>
+          Add</Button>
       </Form.Field>
     </Form>
   );

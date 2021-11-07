@@ -1,32 +1,46 @@
 import React, { useState } from "react";
 import "./Search.css";
-import SearchIcon from "@material-ui/icons/Search";
-import MicIcon from "@material-ui/icons/Mic";
-import { Button } from "@material-ui/core";
+import SearchIcon from "@mui/icons/Search";
+import { Button } from '@mui/material';
 // import {useHistory} from "react-router-dom";
 
 function Search() {
-  const [input, setInput] = useState("");
-//   const history = useHistory();
-  
-  const search = (e) => {
-    e.preventDefault();
-    console.log("search!");
-
-
-    // history.push("/search")
-  };
+  const [title, setTitle] = useState("");
+  //   const history = useHistory();
 
   return (
     <form className="search">
       <div className="search__input">
         <SearchIcon className="search__inputIcon" />
-        <input value={input} onChange={(e) => setInput(e.target.value)} />
+        <input value={title} onChange={(e) => setTitle(e.target.value)} />
         {/* <MicIcon /> */}
       </div>
 
       <div className="search__buttons">
-        <Button variant="outlined" type="submit" onClick={search}>
+        <Button onClick={async () => {
+          const book = { title };
+          const response = await fetch("/input_book", {
+            method: "POST",
+            headers: {
+              "Content_Type": "application/json"
+            },
+            body:
+              JSON.stringify(book)
+          })
+
+          if (response.ok) {
+            console.log("Response Worked! ");
+            console.log(JSON.stringify(response.url));
+            console.log(response);
+            setTitle("We found your favorite book!")
+            console.log(response);
+          }
+          else {
+            console.log("Title not found")
+            setTitle("We did not find this title. Please try again!")
+          }
+
+        }}>
           Find Similar Books
         </Button>
         <Button variant="outlined">I'm Feeling Lucky</Button>
