@@ -82,7 +82,7 @@ function Home() {
               }}>
                 Find Similar Books
               </Button>
-              <Button variant="outlined">I'm Feeling Lucky</Button>
+              <Button variant="outlined" onClick={() => { alert('Feature in development :)') }}>I'm Feeling Lucky</Button>
             </div>
           </form>
           <Grid mt={1} container spacing={4}>{books.map(item => {
@@ -128,7 +128,7 @@ function Home() {
 
 
         </div>
-      </div>
+      </div >
     </div >
   );
 }
