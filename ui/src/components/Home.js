@@ -3,18 +3,20 @@ import "./Home.css";
 import { useState } from "react";
 import "./Search.css";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button } from '@mui/material';
-import { Image } from "semantic-ui-react";
+import { Button, Rating } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid'
+import { color } from "@mui/system";
+
 
 function Home() {
   const [title, setTitle] = useState("");
   const [books, setBooks] = useState([]);
+  const [titleWarning, setTitleWarning] = useState("");
   // if (response.ok) {
   //   console.log("Response Worked! ");
   //   console.log(JSON.stringify(response.url));
@@ -25,7 +27,10 @@ function Home() {
   //   console.log("Title not found")
   //   setTitle("We did not find this title. Please try again!")
   // }
-
+  const cardHeader = {
+    display: "block",
+    overflow: "hidden"
+  }
   return (
     <div className="home">
       <div className="home__header">
@@ -53,7 +58,7 @@ function Home() {
               <input value={title} onChange={(e) => setTitle(e.target.value)} />
               {/* <MicIcon /> */}
             </div>
-
+            <p style={{ color: "red", textAlign: "center" }}>{titleWarning}</p>
             <div className="search__buttons">
               <Button onClick={() => {
                 const book = { title };
@@ -68,9 +73,11 @@ function Home() {
                   return resp.json()
                 }).then((data) => {
                   setBooks(data)
+                  setTitleWarning("")
                 })
                   .catch((error) => {
-                    console.log(error, "catch the hoop")
+                    setTitleWarning("Book not found in database, please try another one :)")
+                    console.log(error, "unable to find the book")
                   })
               }}>
                 Find Similar Books
@@ -78,9 +85,25 @@ function Home() {
               <Button variant="outlined">I'm Feeling Lucky</Button>
             </div>
           </form>
-          <Grid container spacing={4}>{books.map(item => {
+          <Grid mt={1} container spacing={4}>{books.map(item => {
             return <Grid item xs={2}>
               <Card>
+                <CardHeader
+                  classes={cardHeader}
+                  noWrap
+                  title={<Typography style={{ wordWrap: 'break-word' }} noWrap gutterBottom variant="h6" component="div">
+                    {item.title}
+                  </Typography>}
+                  // titleTypographyProps={{ variant: 'h6' }}
+                  subheader={<div>
+                    {item.ratings_count} ratings<br />
+                    <Rating
+                      style={{ marginLeft: "-0.2rem" }}
+                      readOnly
+                      value={item.average_rating}
+                      precision={0.1}
+                    /></div>}
+                />
                 <CardMedia
                   component="img"
                   height="300"
@@ -88,12 +111,11 @@ function Home() {
                   alt="green iguana"
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {item.title}
-                  </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
+                    <span style={{ fontWeight: "bold" }}>Authors:</span>{item.authors}<br />
+                    <span style={{ fontWeight: "bold" }}>Language: </span>{item.language_code}<br />
+                    <span style={{ fontWeight: "bold" }}>Publication Year: </span>{item.original_publication_year}<br />
+
                   </Typography>
                 </CardContent>
                 {/* <CardActions>
@@ -107,7 +129,7 @@ function Home() {
 
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
