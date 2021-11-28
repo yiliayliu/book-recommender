@@ -1,0 +1,14 @@
+[Unit]
+Description=BookApi
+
+[Service]
+Environment=FLASK_APP=api
+Environment=PATH=/home/ec2-user/miniconda3/envs/yang/bin/
+Type=simple
+User=ec2-user
+Restart=on-failure
+WorkingDirectory=/home/ec2-user/workspace/book-recommender
+ExecStart=/home/ec2-user/miniconda3/envs/yang/bin/flask run --host=0.0.0.0 --port 4000
+
+[Install]
+WantedBy=multi-user.target

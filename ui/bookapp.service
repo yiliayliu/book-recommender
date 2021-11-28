@@ -1,0 +1,16 @@
+[Unit]
+Description=BookApp
+
+[Service]
+Environment=NODE_ENV=production
+Environment=PATH=/usr/bin
+Environment=DANGEROUSLY_DISABLE_HOST_CHECK=true
+Environment=CI=True
+Type=simple
+User=ec2-user
+Restart=on-failure
+WorkingDirectory=/home/ec2-user/workspace/book-recommender/ui
+ExecStart=/usr/bin/npm start --prefix /home/ec2-user/workspace/book-recommender/ui
+
+[Install]
+WantedBy=multi-user.target
